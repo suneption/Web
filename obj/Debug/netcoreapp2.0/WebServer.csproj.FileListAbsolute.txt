@@ -1,0 +1,10 @@
+C:\Users\Admin\Documents\R&D\WebServer\bin\Debug\netcoreapp2.0\WebServer.deps.json
+C:\Users\Admin\Documents\R&D\WebServer\bin\Debug\netcoreapp2.0\WebServer.runtimeconfig.json
+C:\Users\Admin\Documents\R&D\WebServer\bin\Debug\netcoreapp2.0\WebServer.runtimeconfig.dev.json
+C:\Users\Admin\Documents\R&D\WebServer\bin\Debug\netcoreapp2.0\WebServer.dll
+C:\Users\Admin\Documents\R&D\WebServer\bin\Debug\netcoreapp2.0\WebServer.pdb
+C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.AssemblyInfo.cs
+C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.dll
+C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.pdb
