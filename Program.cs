@@ -64,44 +64,30 @@ namespace WebServer
                 }
 
                 var inputByteBuffer = new byte[1024];
-                // clientSocket.BeginReceive(inputByteBuffer, 0, inputByteBuffer.Length, 
-                //     SocketFlags.None, 
-                //     (asyncResult) => { 
-                //         try 
-                //         {
-                //             var countOfInputBytes = clientSocket.EndReceive(asyncResult); 
-                //             // var message = Encoding.UTF8.GetString(inputByteBuffer.Take(countOfInputBytes).ToArray());
-                //             // var inputMessage = message.Trim();
-                //             // var outputMessageBytes = Encoding.UTF8.GetBytes(inputMessage.ToUpper());
-                //             Thread.Sleep(1000);
-                //             var outputMessageBytes = new byte[] {};
-                //             clientSocket.Send(outputMessageBytes);
-                //         }
-                //         finally
-                //         {
-                //             if (clientSocket != null) 
-                //             {
-                //                 clientSocket.Shutdown(SocketShutdown.Both);
-                //                 clientSocket.Close();
-                //             }
-                //         }
-                //     }, null);
-
-
-                var countOfInputBytes = clientSocket.Receive(inputByteBuffer);
-
-                // var message = Encoding.UTF8.GetString(inputByteBuffer.Take(countOfInputBytes).ToArray());
-
-                // var inputMessage = message.Trim();
-                // //Console.WriteLine($"Client received: {inputMessage}");
-
-                // var outputMessageBytes = Encoding.UTF8.GetBytes(inputMessage.ToUpper());
-                Thread.Sleep(1000);
-
-                var outputMessageBytes = new byte[] {};
-                clientSocket.Send(outputMessageBytes);
+                clientSocket.BeginReceive(inputByteBuffer, 0, inputByteBuffer.Length, 
+                    SocketFlags.None, 
+                    (asyncResult) => { 
+                        try 
+                        {
+                            var countOfInputBytes = clientSocket.EndReceive(asyncResult); 
+                            // var message = Encoding.UTF8.GetString(inputByteBuffer.Take(countOfInputBytes).ToArray());
+                            // var inputMessage = message.Trim();
+                            // var outputMessageBytes = Encoding.UTF8.GetBytes(inputMessage.ToUpper());
+                            Thread.Sleep(1000);
+                            var outputMessageBytes = new byte[] {};
+                            clientSocket.Send(outputMessageBytes);
+                        }
+                        finally
+                        {
+                            if (clientSocket != null) 
+                            {
+                                clientSocket.Shutdown(SocketShutdown.Both);
+                                clientSocket.Close();
+                            }
+                        }
+                    }, null);
             } 
-            finally 
+            catch 
             {
                 if (clientSocket != null) 
                 {
