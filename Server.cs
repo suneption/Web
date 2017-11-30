@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,20 +13,15 @@ public class Server : IDisposable
     public static long _countOfRequests = 0;
 
     private readonly Socket _rootSocket;
+    private readonly IServerStatistics _serverStatistics;
 
-    public Server()
+    public Server(IServerStatistics serverStatistics)
     {
         _defaultIpAddress = IPAddress.Any;
         _defaultPort = 10001;
 
         _rootSocket = Initialize();
-
-        var timer = new System.Timers.Timer(1000);
-        timer.Start();
-        timer.Elapsed += (sender, e) => {
-            var countOfRequests = Interlocked.Exchange(ref _countOfRequests, 0);
-            Console.WriteLine(countOfRequests);
-        };
+        _serverStatistics = serverStatistics;
     }
 
     public Socket Initialize() 
@@ -41,7 +38,7 @@ public class Server : IDisposable
         while(true) 
         {                    
             var clientSocket = await AcceptAsync(_rootSocket);
-            Task.Run(() => HandleClient(clientSocket));
+            var handleClientTask = Task.Run(async () => await HandleClient(clientSocket));
         }
     }
 
@@ -49,16 +46,15 @@ public class Server : IDisposable
     {
         try
         {
-            var requestBuffer = new byte[1024];
-            var requestSize = await ReceiveAsync(clientSocket, requestBuffer);
-            // var message = Encoding.UTF8.GetString(inputByteBuffer.Take(requestSize).ToArray());
-            // var inputMessage = message.Trim();
-            // var outputMessageBytes = Encoding.UTF8.GetBytes(inputMessage.ToUpper());
-            Thread.Sleep(1000);
-            var outputMessageBytes = new byte[] {};
-            clientSocket.Send(outputMessageBytes);
+            var requestRaw = new byte[1024];
+            var requestSize = await ReceiveAsync(clientSocket, requestRaw);
+            var request = requestRaw.Take(requestSize).ToArray();
 
-            Interlocked.Increment(ref _countOfRequests);
+            var response = await ProcessRequest(request);
+
+            clientSocket.Send(response);
+
+            _serverStatistics.ResponseSended();
         }
         catch (Exception e)
         {
@@ -68,13 +64,25 @@ public class Server : IDisposable
         {
             if (clientSocket != null)
             {
-                clientSocket.Shutdown(SocketShutdown.Both);
+                if (clientSocket.Connected)
+                {
+                    clientSocket.Shutdown(SocketShutdown.Both);
+                }
                 clientSocket.Close();
             }
         }
     }
 
-    public Task<int> ReceiveAsync(Socket clientSocket, byte[] requestBuffer) 
+    private async Task<byte[]> ProcessRequest(byte[] request)
+    {
+        var message = Encoding.UTF8.GetString(request);
+        var inputMessage = message.Trim();
+        var response = Encoding.UTF8.GetBytes(inputMessage.ToUpper());
+        await Task.Delay(1000);
+        return response;
+    }
+
+    private Task<int> ReceiveAsync(Socket clientSocket, byte[] requestBuffer) 
     {
         var result = Task.Factory
             .FromAsync(
@@ -85,7 +93,7 @@ public class Server : IDisposable
         return result;
     }
 
-    public Task<Socket> AcceptAsync(Socket clientSocket)
+    private Task<Socket> AcceptAsync(Socket clientSocket) 
     {
         var result = Task.Factory
             .FromAsync(clientSocket.BeginAccept, clientSocket.EndAccept, null);

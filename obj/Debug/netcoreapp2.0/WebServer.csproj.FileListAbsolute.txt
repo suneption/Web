@@ -8,3 +8,4 @@ C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.Assembl
 C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.AssemblyInfo.cs
 C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.dll
 C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.pdb
+C:\Users\Admin\Documents\R&D\WebServer\obj\Debug\netcoreapp2.0\WebServer.csprojResolveAssemblyReference.cache

@@ -17,7 +17,8 @@ namespace WebServer
         {
             Console.WriteLine("Server is starting");
             
-            using (var server = new Server())
+            var serverStats = new ServerStatistics();
+            using (var server = new Server(serverStats))
             {
                 server.Listen().Wait();            
             }
