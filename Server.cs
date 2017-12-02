@@ -13,9 +13,9 @@ public class Server : IDisposable
     public static long _countOfRequests = 0;
 
     private readonly Socket _rootSocket;
-    private readonly IServerStatistics _serverStatistics;
+    private readonly IServerDiagnostic _serverStatistics;
 
-    public Server(IServerStatistics serverStatistics)
+    public Server(IServerDiagnostic serverStatistics)
     {
         _defaultIpAddress = IPAddress.Any;
         _defaultPort = 10001;

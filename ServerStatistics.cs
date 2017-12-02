@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-public class ServerStatistics : IServerStatistics
+public class ServerStatistics : IServerDiagnostic
 {
     private int _countOfRequests;
 
